@@ -1,10 +1,10 @@
 
 <!DOCTYPE html>
-<html lang="en">
+<html lang="hi">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>AI Quiz Generator</title>
+<title>हिंदी AI क्विज़ जनरेटर</title>
 
 <style>
 * {
@@ -17,39 +17,33 @@ body {
     font-family: Arial, sans-serif;
     background: #080d18;
     color: white;
-    min-height: 100vh;
     padding: 20px;
 }
 
 .container {
-    max-width: 750px;
-    margin: 25px auto;
-    background: #121c30;
+    max-width: 700px;
+    margin: 30px auto;
+    background: #142039;
     padding: 25px;
     border-radius: 18px;
-    border: 1px solid #263b5e;
-    box-shadow: 0 0 25px #0066ff22;
+    border: 1px solid #345078;
 }
 
-header {
+h1 {
     text-align: center;
-    margin-bottom: 25px;
-}
-
-header h1 {
     color: #38a5ff;
-    font-size: 32px;
+    margin-bottom: 12px;
 }
 
-header p {
-    color: #aabbd5;
-    margin-top: 10px;
+.subtitle {
+    text-align: center;
+    color: #b9cbe4;
+    margin-bottom: 25px;
 }
 
 label {
     display: block;
-    margin: 17px 0 8px;
-    color: #d8e7ff;
+    margin: 18px 0 8px;
 }
 
 select, button {
@@ -61,18 +55,16 @@ select, button {
 }
 
 select {
-    background: #202e48;
+    background: #253653;
     color: white;
-    border: 1px solid #405879;
 }
 
 button {
     background: #087cff;
     color: white;
     font-weight: bold;
+    margin-top: 20px;
     cursor: pointer;
-    margin-top: 18px;
-    transition: .2s;
 }
 
 button:hover {
@@ -80,84 +72,63 @@ button:hover {
 }
 
 button:disabled {
-    background: #52647e;
+    background: #53647e;
     cursor: not-allowed;
 }
 
-#quizBox, #resultBox {
+#quiz, #result {
     display: none;
 }
 
-.top-info {
+.info {
     display: flex;
     justify-content: space-between;
-    gap: 10px;
-    color: #62b6ff;
     margin: 20px 0;
+    color: #55b4ff;
 }
 
-.question {
+#question {
     font-size: 21px;
     line-height: 1.5;
     margin: 20px 0;
 }
 
 .option {
-    display: block;
     padding: 14px;
+    background: #263a59;
+    border: 1px solid #496384;
+    border-radius: 9px;
     margin: 12px 0;
-    background: #202e48;
-    border: 1px solid #405879;
-    border-radius: 10px;
     cursor: pointer;
 }
 
 .option:hover {
-    background: #29466c;
+    background: #31537c;
 }
 
-.option.selected {
-    background: #0757a9;
-    border-color: #38a5ff;
-}
-
-.option.correct {
+.correct {
     background: #176b42;
 }
 
-.option.wrong {
-    background: #8a2735;
+.wrong {
+    background: #922d3d;
 }
 
 #feedback {
     margin-top: 15px;
-    line-height: 1.5;
-    color: #9ee4b8;
+    line-height: 1.6;
 }
 
-#resultBox {
+#result {
     text-align: center;
 }
 
-#score {
+#finalScore {
     font-size: 45px;
     color: #38a5ff;
     margin: 20px;
 }
 
-.small {
-    color: #aabbd5;
-    margin-top: 15px;
-}
-
-@media(max-width:500px) {
-    .container {
-        padding: 18px;
-    }
-    header h1 {
-        font-size: 25px;
-    }
-}
 </style>
 </head>
 
@@ -165,79 +136,77 @@ button:disabled {
 
 <div class="container">
 
-<header>
-    <h1>🤖 AI Quiz Generator</h1>
-    <p>Learn Anything • Test Your Knowledge</p>
-</header>
+<h1>🤖 हिंदी AI क्विज़ जनरेटर</h1>
 
-<div id="setupBox">
+<p class="subtitle">
+अपना ज्ञान परखें और नए सवाल सीखें!
+</p>
 
-    <h2>Start Your Quiz</h2>
+<div id="home">
 
-    <label>Select Subject</label>
-    <select id="subject">
-        <option value="Science">Science</option>
-        <option value="Maths">Mathematics</option>
-        <option value="English">English</option>
-        <option value="GK">General Knowledge</option>
-        <option value="Computer">Computer</option>
-        <option value="History">History</option>
-        <option value="Geography">Geography</option>
-        <option value="Biology">Biology</option>
-        <option value="Physics">Physics</option>
-        <option value="Chemistry">Chemistry</option>
-    </select>
+<label>विषय चुनें</label>
 
-    <label>Select Difficulty</label>
-    <select id="difficulty">
-        <option>Easy</option>
-        <option>Medium</option>
-        <option>Hard</option>
-    </select>
+<select id="subject">
+<option value="विज्ञान">विज्ञान</option>
+<option value="गणित">गणित</option>
+<option value="अंग्रेज़ी">अंग्रेज़ी</option>
+<option value="सामान्य ज्ञान">सामान्य ज्ञान</option>
+<option value="कंप्यूटर">कंप्यूटर</option>
+<option value="इतिहास">इतिहास</option>
+<option value="भूगोल">भूगोल</option>
+</select>
 
-    <label>Number of Questions</label>
-    <select id="total">
-        <option value="5">5 Questions</option>
-        <option value="10" selected>10 Questions</option>
-        <option value="15">15 Questions</option>
-    </select>
+<label>कठिनाई चुनें</label>
 
-    <button onclick="startQuiz()">🚀 Generate Quiz</button>
+<select id="level">
+<option>आसान</option>
+<option>मध्यम</option>
+<option>कठिन</option>
+</select>
+
+<label>कितने सवाल चाहिए?</label>
+
+<select id="count">
+<option value="5">5 सवाल</option>
+<option value="10" selected>10 सवाल</option>
+</select>
+
+<button onclick="startQuiz()">क्विज़ शुरू करें 🚀</button>
 
 </div>
 
-<div id="quizBox">
+<div id="quiz">
 
-    <div class="top-info">
-        <span id="progress">Question 1</span>
-        <span id="scoreLive">Score: 0</span>
-    </div>
+<div class="info">
+<span id="progress"></span>
+<span id="score"></span>
+</div>
 
-    <h3 id="question" class="question"></h3>
+<h3 id="question"></h3>
 
-    <div id="options"></div>
+<div id="options"></div>
 
-    <p id="feedback"></p>
+<p id="feedback"></p>
 
-    <button id="nextBtn" onclick="nextQuestion()" disabled>
-        Next Question →
-    </button>
+<button id="next" onclick="nextQuestion()" disabled>
+अगला सवाल →
+</button>
 
 </div>
 
-<div id="resultBox">
+<div id="result">
 
-    <h2>🎉 Quiz Completed!</h2>
+<h2>🎉 क्विज़ पूरा हुआ!</h2>
 
-    <div id="score"></div>
+<div id="finalScore"></div>
 
-    <h3 id="message"></h3>
+<h3 id="message"></h3>
 
-    <p id="details" class="small"></p>
+<p id="percentage"></p>
 
-    <button onclick="location.reload()">
-        🔄 Play Again
-    </button>
+<button onclick="location.reload()">
+दोबारा खेलें 🔄
+</button>
 
 </div>
 
@@ -245,113 +214,72 @@ button:disabled {
 
 <script>
 
-// QUESTION DATABASE
-
 const questions = {
 
-Science: [
-["Which planet is known as the Red Planet?",["Earth","Mars","Jupiter","Venus"],1],
-["Which gas do plants absorb?",["Oxygen","Nitrogen","Carbon Dioxide","Hydrogen"],2],
-["What is the boiling point of water?",["50°C","100°C","150°C","200°C"],1],
-["Which organ pumps blood?",["Brain","Lungs","Heart","Kidney"],2],
-["What is H2O?",["Oxygen","Water","Salt","Hydrogen"],1],
-["Which force pulls objects toward Earth?",["Magnetism","Gravity","Friction","Electricity"],1],
-["What is the center of an atom called?",["Nucleus","Cell","Electron","Molecule"],0],
-["Which vitamin comes from sunlight?",["Vitamin A","Vitamin B","Vitamin C","Vitamin D"],3],
-["Which gas do humans breathe in?",["Oxygen","Carbon dioxide","Helium","Methane"],0],
-["What is the nearest star to Earth?",["Sirius","Sun","Polaris","Vega"],1]
+"विज्ञान": [
+["सूर्य किस दिशा से निकलता है?",["उत्तर","दक्षिण","पूर्व","पश्चिम"],2],
+["पौधे कौन सी गैस लेते हैं?",["ऑक्सीजन","कार्बन डाइऑक्साइड","हाइड्रोजन","नाइट्रोजन"],1],
+["पानी का रासायनिक सूत्र क्या है?",["CO2","H2O","O2","NaCl"],1],
+["मानव शरीर में रक्त कौन पंप करता है?",["मस्तिष्क","हृदय","फेफड़े","गुर्दे"],1],
+["लाल ग्रह किसे कहते हैं?",["पृथ्वी","मंगल","शुक्र","बृहस्पति"],1],
+["पानी का क्वथनांक कितना है?",["50°C","100°C","150°C","200°C"],1],
+["पृथ्वी का प्राकृतिक उपग्रह कौन है?",["सूर्य","चंद्रमा","मंगल","शुक्र"],1],
+["बल की SI इकाई क्या है?",["जूल","न्यूटन","वाट","मीटर"],1],
+["मनुष्य सांस लेने के लिए कौन सी गैस उपयोग करता है?",["ऑक्सीजन","नाइट्रोजन","हीलियम","मीथेन"],0],
+["पौधों का हरा रंग किसके कारण होता है?",["हीमोग्लोबिन","क्लोरोफिल","कैल्शियम","प्रोटीन"],1]
 ],
 
-Maths: [
-["What is 12 × 8?",["86","96","106","108"],1],
-["What is 100 divided by 4?",["20","25","30","40"],1],
-["What is the square of 9?",["18","72","81","99"],2],
-["What is 15 + 25?",["30","35","40","45"],2],
-["What is 7 × 7?",["42","48","49","56"],2],
-["What is 144 divided by 12?",["10","11","12","14"],2],
-["What is half of 80?",["20","30","40","50"],2],
-["What is 20% of 100?",["10","20","30","40"],1],
-["How many sides does a triangle have?",["2","3","4","5"],1],
-["What is 5 cubed?",["25","75","100","125"],3]
+"गणित": [
+["12 × 8 कितना होता है?",["86","96","106","108"],1],
+["100 ÷ 4 कितना है?",["20","25","30","40"],1],
+["9 का वर्ग कितना है?",["18","72","81","99"],2],
+["15 + 25 कितना है?",["30","35","40","45"],2],
+["7 × 7 कितना है?",["42","48","49","56"],2],
+["144 ÷ 12 कितना है?",["10","11","12","14"],2],
+["80 का आधा कितना है?",["20","30","40","50"],2],
+["100 का 20 प्रतिशत कितना है?",["10","20","30","40"],1],
+["त्रिभुज की कितनी भुजाएँ होती हैं?",["2","3","4","5"],1],
+["5 का घन कितना है?",["25","75","100","125"],3]
 ],
 
-English: [
-["What is the plural of Child?",["Childs","Children","Childes","Childrens"],1],
-["Choose the correct spelling.",["Apple","Aple","Appel","Appl"],0],
-["What is the opposite of Hot?",["Warm","Cold","Heat","Fire"],1],
-["What is the past tense of Go?",["Goed","Going","Went","Goes"],2],
-["Which is a noun?",["Run","Beautiful","School","Quickly"],2],
-["What is the opposite of Happy?",["Glad","Sad","Joy","Smile"],1],
-["Which is a vowel?",["B","C","E","D"],2],
-["What is the plural of Book?",["Bookes","Books","Bookies","Book"],1],
-["Choose the correct article: ___ Apple",["A","An","Thee","No article"],1],
-["What is the synonym of Big?",["Small","Tiny","Large","Short"],2]
+"अंग्रेज़ी": [
+["Apple का हिंदी अर्थ क्या है?",["आम","सेब","केला","अंगूर"],1],
+["Cat का हिंदी अर्थ क्या है?",["कुत्ता","बिल्ली","घोड़ा","शेर"],1],
+["Book का हिंदी अर्थ क्या है?",["किताब","कलम","मेज","कुर्सी"],0],
+["Sun का हिंदी अर्थ क्या है?",["चाँद","तारा","सूर्य","बादल"],2],
+["Water का हिंदी अर्थ क्या है?",["हवा","पानी","आग","मिट्टी"],1]
 ],
 
-GK: [
-["What is the capital of India?",["Mumbai","Delhi","Kolkata","Chennai"],1],
-["Which is the largest ocean?",["Indian","Atlantic","Pacific","Arctic"],2],
-["How many days are in a week?",["5","6","7","8"],2],
-["Which is the national animal of India?",["Lion","Tiger","Elephant","Deer"],1],
-["Which planet is largest?",["Earth","Mars","Jupiter","Mercury"],2],
-["What is the currency of Japan?",["Dollar","Yen","Euro","Rupee"],1],
-["Which is the tallest mountain?",["K2","Everest","Kilimanjaro","Alps"],1],
-["How many colours are in a rainbow?",["5","6","7","8"],2],
-["Which country is famous for the Eiffel Tower?",["Italy","France","Japan","India"],1],
-["Which is the largest continent?",["Africa","Europe","Asia","Australia"],2]
+"सामान्य ज्ञान": [
+["भारत की राजधानी क्या है?",["मुंबई","दिल्ली","कोलकाता","चेन्नई"],1],
+["भारत का राष्ट्रीय पशु कौन है?",["शेर","बाघ","हाथी","हिरण"],1],
+["भारत कब स्वतंत्र हुआ?",["1945","1946","1947","1950"],2],
+["विश्व का सबसे बड़ा महासागर कौन सा है?",["हिंद महासागर","प्रशांत महासागर","अटलांटिक महासागर","आर्कटिक महासागर"],1],
+["एक सप्ताह में कितने दिन होते हैं?",["5","6","7","8"],2]
 ],
 
-Computer: [
-["What is the brain of a computer?",["Mouse","CPU","Keyboard","Monitor"],1],
-["What does HTML stand for?",["Hyper Text Markup Language","High Text Machine Language","Hyper Tool Mark Language","Home Text Markup Language"],0],
-["Which device is used to type?",["Mouse","Monitor","Keyboard","Speaker"],2],
-["What is the full form of CPU?",["Central Processing Unit","Computer Personal Unit","Central Program Utility","Control Processing User"],0],
-["Which one is an operating system?",["Windows","HTML","Google","CPU"],0],
-["What is used to browse websites?",["Browser","Calculator","Paint","Notepad"],0],
-["Which is an input device?",["Monitor","Printer","Mouse","Speaker"],2],
-["What is 1 KB approximately?",["100 bytes","1024 bytes","10 bytes","10000 bytes"],1],
-["Which symbol is used for email?",["#","@","&","%"],1],
-["Which language is used for web page styling?",["HTML","CSS","SQL","C"],1]
+"कंप्यूटर": [
+["कंप्यूटर का दिमाग किसे कहते हैं?",["माउस","CPU","कीबोर्ड","मॉनिटर"],1],
+["कीबोर्ड का उपयोग किस लिए होता है?",["टाइप करने","सुनने","देखने","प्रिंट करने"],0],
+["HTML का पूरा नाम क्या है?",["Hyper Text Markup Language","High Text Machine Language","Home Tool Markup Language","इनमें से कोई नहीं"],0],
+["कंप्यूटर में माउस क्या है?",["आउटपुट डिवाइस","इनपुट डिवाइस","स्टोरेज","सॉफ्टवेयर"],1],
+["कंप्यूटर का उपयोग किसमें होता है?",["शिक्षा","बैंक","अस्पताल","उपरोक्त सभी"],3]
 ],
 
-History: [
-["Who was the first Mughal emperor in India?",["Akbar","Babur","Shah Jahan","Humayun"],1],
-["In which year did India become independent?",["1945","1946","1947","1950"],2],
-["Who is known as the Father of the Nation in India?",["Jawaharlal Nehru","Mahatma Gandhi","Sardar Patel","B. R. Ambedkar"],1],
-["Who built the Taj Mahal?",["Akbar","Babur","Shah Jahan","Aurangzeb"],2],
-["Who was the first Prime Minister of India?",["Rajendra Prasad","Jawaharlal Nehru","Sardar Patel","Lal Bahadur Shastri"],1]
+"इतिहास": [
+["भारत के राष्ट्रपिता किसे कहा जाता है?",["नेहरू","महात्मा गांधी","पटेल","सुभाष चंद्र बोस"],1],
+["ताजमहल किसने बनवाया था?",["अकबर","बाबर","शाहजहाँ","हुमायूँ"],2],
+["भारत के प्रथम प्रधानमंत्री कौन थे?",["डॉ. राजेंद्र प्रसाद","जवाहरलाल नेहरू","सरदार पटेल","लाल बहादुर शास्त्री"],1],
+["मुगल साम्राज्य का संस्थापक कौन था?",["अकबर","बाबर","औरंगजेब","शाहजहाँ"],1],
+["भारत का संविधान कब लागू हुआ?",["15 अगस्त 1947","26 जनवरी 1950","2 अक्टूबर 1948","26 नवंबर 1949"],1]
 ],
 
-Geography: [
-["Which is the largest continent?",["Europe","Asia","Africa","Australia"],1],
-["Which is the longest river traditionally identified in Africa?",["Nile","Amazon","Ganga","Yangtze"],0],
-["Which is the largest hot desert?",["Thar","Sahara","Gobi","Kalahari"],1],
-["How many continents are there?",["5","6","7","8"],2],
-["Which planet is called the Blue Planet?",["Mars","Earth","Venus","Jupiter"],1]
-],
-
-Biology: [
-["What is the basic unit of life?",["Tissue","Cell","Organ","Atom"],1],
-["Which organ helps us breathe?",["Heart","Lungs","Liver","Kidney"],1],
-["Which part of a plant absorbs water?",["Flower","Root","Fruit","Leaf"],1],
-["Which blood cells carry oxygen?",["White cells","Red cells","Platelets","Plasma"],1],
-["What is the green pigment in plants?",["Chlorophyll","Melanin","Keratin","Haemoglobin"],0]
-],
-
-Physics: [
-["What is the SI unit of force?",["Joule","Newton","Watt","Pascal"],1],
-["What is the speed of light approximately?",["300,000 km/s","30 km/s","3,000 km/s","30,000 km/s"],0],
-["Which instrument measures temperature?",["Barometer","Thermometer","Ammeter","Voltmeter"],1],
-["What is the SI unit of energy?",["Watt","Joule","Newton","Metre"],1],
-["Sound travels fastest in which?",["Vacuum","Air","Water","Solids"],3]
-],
-
-Chemistry: [
-["What is the chemical symbol of Gold?",["Ag","Au","Fe","Go"],1],
-["What is the pH of neutral pure water at 25°C?",["0","5","7","14"],2],
-["Which gas is needed for combustion?",["Oxygen","Nitrogen","Helium","Carbon dioxide"],0],
-["What is the chemical symbol of Sodium?",["S","Na","So","N"],1],
-["Which is a noble gas?",["Oxygen","Hydrogen","Neon","Nitrogen"],2]
+"भूगोल": [
+["विश्व का सबसे बड़ा महाद्वीप कौन सा है?",["अफ्रीका","एशिया","यूरोप","ऑस्ट्रेलिया"],1],
+["भारत की सबसे लंबी नदी कौन सी है?",["यमुना","गंगा","नर्मदा","गोदावरी"],1],
+["विश्व का सबसे ऊँचा पर्वत कौन सा है?",["K2","माउंट एवरेस्ट","कंचनजंगा","नंगा पर्वत"],1],
+["सहारा मरुस्थल किस महाद्वीप में है?",["एशिया","अफ्रीका","यूरोप","ऑस्ट्रेलिया"],1],
+["पृथ्वी पर कितने महाद्वीप हैं?",["5","6","7","8"],2]
 ]
 
 };
@@ -360,36 +288,25 @@ let quiz = [];
 let current = 0;
 let score = 0;
 let answered = false;
-let total = 10;
-
-// START QUIZ
 
 function startQuiz() {
 
     let subject = document.getElementById("subject").value;
-
-    let difficulty = document.getElementById("difficulty").value;
-
-    total = Number(document.getElementById("total").value);
+    let count = Number(document.getElementById("count").value);
 
     quiz = [...questions[subject]];
 
-    // Shuffle questions
     quiz.sort(() => Math.random() - 0.5);
-
-    quiz = quiz.slice(0, Math.min(total, quiz.length));
+    quiz = quiz.slice(0, Math.min(count, quiz.length));
 
     current = 0;
     score = 0;
 
-    document.getElementById("setupBox").style.display = "none";
-    document.getElementById("quizBox").style.display = "block";
+    document.getElementById("home").style.display = "none";
+    document.getElementById("quiz").style.display = "block";
 
     showQuestion();
-
 }
-
-// SHOW QUESTION
 
 function showQuestion() {
 
@@ -398,41 +315,38 @@ function showQuestion() {
     let q = quiz[current];
 
     document.getElementById("progress").innerText =
-        "Question " + (current + 1) + " / " + quiz.length;
+    "सवाल " + (current + 1) + " / " + quiz.length;
 
-    document.getElementById("scoreLive").innerText =
-        "Score: " + score;
+    document.getElementById("score").innerText =
+    "अंक: " + score;
 
     document.getElementById("question").innerText = q[0];
 
     document.getElementById("feedback").innerText = "";
 
-    document.getElementById("nextBtn").disabled = true;
+    document.getElementById("next").disabled = true;
 
     let options = document.getElementById("options");
-
     options.innerHTML = "";
 
-    q[1].forEach((option, index) => {
+    q[1].forEach((option,index) => {
 
-        let btn = document.createElement("div");
+        let div = document.createElement("div");
 
-        btn.className = "option";
-        btn.innerText = option;
+        div.className = "option";
+        div.innerText = option;
 
-        btn.onclick = () => checkAnswer(index, btn);
+        div.onclick = () => checkAnswer(index,div);
 
-        options.appendChild(btn);
+        options.appendChild(div);
 
     });
 
 }
 
-// CHECK ANSWER
-
 function checkAnswer(index, selected) {
 
-    if (answered) return;
+    if(answered) return;
 
     answered = true;
 
@@ -440,46 +354,41 @@ function checkAnswer(index, selected) {
 
     let all = document.querySelectorAll(".option");
 
-    all.forEach((btn, i) => {
+    all.forEach((option,i) => {
 
-        if (i === correct) {
-            btn.classList.add("correct");
-        }
+        if(i === correct) option.classList.add("correct");
 
-        if (i === index && index !== correct) {
-            btn.classList.add("wrong");
-        }
+        if(i === index && index !== correct)
+        option.classList.add("wrong");
 
     });
 
-    if (index === correct) {
+    if(index === correct) {
 
         score++;
 
         document.getElementById("feedback").innerText =
-            "✅ Excellent! Your answer is correct.";
+        "✅ बहुत बढ़िया! आपका जवाब सही है।";
 
     } else {
 
         document.getElementById("feedback").innerText =
-            "❌ Wrong Answer! Correct Answer: " + quiz[current][1][correct];
+        "❌ गलत जवाब! सही जवाब है: " + quiz[current][1][correct];
 
     }
 
-    document.getElementById("scoreLive").innerText =
-        "Score: " + score;
+    document.getElementById("score").innerText =
+    "अंक: " + score;
 
-    document.getElementById("nextBtn").disabled = false;
+    document.getElementById("next").disabled = false;
 
 }
-
-// NEXT QUESTION
 
 function nextQuestion() {
 
     current++;
 
-    if (current < quiz.length) {
+    if(current < quiz.length) {
 
         showQuestion();
 
@@ -491,34 +400,27 @@ function nextQuestion() {
 
 }
 
-// RESULT
-
 function showResult() {
 
-    document.getElementById("quizBox").style.display = "none";
+    document.getElementById("quiz").style.display = "none";
 
-    document.getElementById("resultBox").style.display = "block";
+    document.getElementById("result").style.display = "block";
 
-    document.getElementById("score").innerText =
-        score + " / " + quiz.length;
+    let percent = Math.round(score / quiz.length * 100);
 
-    let percentage = Math.round(score / quiz.length * 100);
+    document.getElementById("finalScore").innerText =
+    score + " / " + quiz.length;
 
-    let message = "";
+    document.getElementById("percentage").innerText =
+    "आपका परिणाम: " + percent + "%";
 
-    if (percentage >= 80) {
-        message = "🏆 Excellent! Amazing Work!";
-    } else if (percentage >= 50) {
-        message = "👏 Good Job! Keep Practicing!";
-    } else {
-        message = "💪 Keep Learning! Try Again!";
-    }
+    let message = percent >= 80 ?
+    "🏆 शानदार! आपने बहुत अच्छा किया!" :
+    percent >= 50 ?
+    "👏 बहुत अच्छा! अभ्यास जारी रखें!" :
+    "💪 चिंता न करें, फिर से कोशिश करें!";
 
     document.getElementById("message").innerText = message;
-
-    document.getElementById("details").innerText =
-        "You answered " + score + " questions correctly out of " +
-        quiz.length + ". Your score is " + percentage + "%.";
 
 }
 
