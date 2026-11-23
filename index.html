@@ -1,430 +1,158 @@
-
 <!DOCTYPE html>
 <html lang="hi">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>हिंदी AI क्विज़ जनरेटर</title>
-
+<title>Hindi AI Quiz Generator</title>
 <style>
-* {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
+*{box-sizing:border-box}
+body{
+  margin:0;font-family:Arial,sans-serif;
+  background:#080d18;color:white;
+  min-height:100vh;display:flex;
+  justify-content:center;align-items:center;padding:15px
 }
-
-body {
-    font-family: Arial, sans-serif;
-    background: #080d18;
-    color: white;
-    padding: 20px;
+.app{
+  width:100%;max-width:750px;height:90vh;
+  background:#131d30;border:1px solid #293957;
+  border-radius:18px;display:flex;flex-direction:column;
+  overflow:hidden
 }
-
-.container {
-    max-width: 700px;
-    margin: 30px auto;
-    background: #142039;
-    padding: 25px;
-    border-radius: 18px;
-    border: 1px solid #345078;
+header{
+  background:#1b2b47;padding:18px;text-align:center;
+  border-bottom:1px solid #34445d
 }
-
-h1 {
-    text-align: center;
-    color: #38a5ff;
-    margin-bottom: 12px;
+header h2{margin:0;color:#38bdf8}
+header p{margin:7px 0 0;color:#cbd5e1;font-size:13px}
+#chat{flex:1;overflow-y:auto;padding:18px}
+.msg{
+  padding:12px 15px;margin:10px 0;
+  border-radius:14px;max-width:85%;
+  line-height:1.6;white-space:pre-wrap
 }
-
-.subtitle {
-    text-align: center;
-    color: #b9cbe4;
-    margin-bottom: 25px;
+.ai{background:#263852;margin-right:auto}
+.user{background:#075985;margin-left:auto}
+#status{padding:5px 15px;color:#94a3b8;font-size:12px}
+.controls{
+  display:flex;gap:8px;padding:12px;
+  background:#1b2b47
 }
-
-label {
-    display: block;
-    margin: 18px 0 8px;
+input{
+  flex:1;min-width:0;padding:14px;
+  border:1px solid #475569;border-radius:10px;
+  background:#0f172a;color:white;font-size:15px;
+  outline:none
 }
-
-select, button {
-    width: 100%;
-    padding: 13px;
-    border-radius: 9px;
-    border: none;
-    font-size: 16px;
+button{
+  border:0;border-radius:10px;padding:12px 17px;
+  background:#0284c7;color:white;font-weight:bold;
+  cursor:pointer
 }
-
-select {
-    background: #253653;
-    color: white;
-}
-
-button {
-    background: #087cff;
-    color: white;
-    font-weight: bold;
-    margin-top: 20px;
-    cursor: pointer;
-}
-
-button:hover {
-    background: #0056c9;
-}
-
-button:disabled {
-    background: #53647e;
-    cursor: not-allowed;
-}
-
-#quiz, #result {
-    display: none;
-}
-
-.info {
-    display: flex;
-    justify-content: space-between;
-    margin: 20px 0;
-    color: #55b4ff;
-}
-
-#question {
-    font-size: 21px;
-    line-height: 1.5;
-    margin: 20px 0;
-}
-
-.option {
-    padding: 14px;
-    background: #263a59;
-    border: 1px solid #496384;
-    border-radius: 9px;
-    margin: 12px 0;
-    cursor: pointer;
-}
-
-.option:hover {
-    background: #31537c;
-}
-
-.correct {
-    background: #176b42;
-}
-
-.wrong {
-    background: #922d3d;
-}
-
-#feedback {
-    margin-top: 15px;
-    line-height: 1.6;
-}
-
-#result {
-    text-align: center;
-}
-
-#finalScore {
-    font-size: 45px;
-    color: #38a5ff;
-    margin: 20px;
-}
-
+button:disabled{opacity:.5;cursor:not-allowed}
+#start{margin:0 15px 12px;background:#16a34a}
 </style>
 </head>
-
 <body>
+<div class="app">
+  <header>
+    <h2>🤖 Hindi AI Quiz Generator</h2>
+    <p>हिंदी में सवालों के जवाब दें और अपना ज्ञान बढ़ाएँ</p>
+  </header>
 
-<div class="container">
+  <div id="chat">
+    <div class="msg ai">
+      नमस्ते! मैं आपका AI Quiz Teacher हूँ।
+      नीचे Start Quiz दबाएँ और अपना विषय चुनें।
+    </div>
+  </div>
 
-<h1>🤖 हिंदी AI क्विज़ जनरेटर</h1>
+  <div id="status">तैयार है</div>
+  <button id="start" onclick="startQuiz()">▶ Start Quiz</button>
 
-<p class="subtitle">
-अपना ज्ञान परखें और नए सवाल सीखें!
-</p>
-
-<div id="home">
-
-<label>विषय चुनें</label>
-
-<select id="subject">
-<option value="विज्ञान">विज्ञान</option>
-<option value="गणित">गणित</option>
-<option value="अंग्रेज़ी">अंग्रेज़ी</option>
-<option value="सामान्य ज्ञान">सामान्य ज्ञान</option>
-<option value="कंप्यूटर">कंप्यूटर</option>
-<option value="इतिहास">इतिहास</option>
-<option value="भूगोल">भूगोल</option>
-</select>
-
-<label>कठिनाई चुनें</label>
-
-<select id="level">
-<option>आसान</option>
-<option>मध्यम</option>
-<option>कठिन</option>
-</select>
-
-<label>कितने सवाल चाहिए?</label>
-
-<select id="count">
-<option value="5">5 सवाल</option>
-<option value="10" selected>10 सवाल</option>
-</select>
-
-<button onclick="startQuiz()">क्विज़ शुरू करें 🚀</button>
-
-</div>
-
-<div id="quiz">
-
-<div class="info">
-<span id="progress"></span>
-<span id="score"></span>
-</div>
-
-<h3 id="question"></h3>
-
-<div id="options"></div>
-
-<p id="feedback"></p>
-
-<button id="next" onclick="nextQuestion()" disabled>
-अगला सवाल →
-</button>
-
-</div>
-
-<div id="result">
-
-<h2>🎉 क्विज़ पूरा हुआ!</h2>
-
-<div id="finalScore"></div>
-
-<h3 id="message"></h3>
-
-<p id="percentage"></p>
-
-<button onclick="location.reload()">
-दोबारा खेलें 🔄
-</button>
-
-</div>
-
+  <div class="controls">
+    <input id="answer" placeholder="अपना जवाब हिंदी में लिखें..."
+           onkeydown="if(event.key==='Enter')sendAnswer()">
+    <button id="send" onclick="sendAnswer()">Send</button>
+  </div>
 </div>
 
 <script>
+const chat = document.getElementById("chat");
+const input = document.getElementById("answer");
+const sendBtn = document.getElementById("send");
+const statusText = document.getElementById("status");
 
-const questions = {
+let history = [];
+let busy = false;
 
-"विज्ञान": [
-["सूर्य किस दिशा से निकलता है?",["उत्तर","दक्षिण","पूर्व","पश्चिम"],2],
-["पौधे कौन सी गैस लेते हैं?",["ऑक्सीजन","कार्बन डाइऑक्साइड","हाइड्रोजन","नाइट्रोजन"],1],
-["पानी का रासायनिक सूत्र क्या है?",["CO2","H2O","O2","NaCl"],1],
-["मानव शरीर में रक्त कौन पंप करता है?",["मस्तिष्क","हृदय","फेफड़े","गुर्दे"],1],
-["लाल ग्रह किसे कहते हैं?",["पृथ्वी","मंगल","शुक्र","बृहस्पति"],1],
-["पानी का क्वथनांक कितना है?",["50°C","100°C","150°C","200°C"],1],
-["पृथ्वी का प्राकृतिक उपग्रह कौन है?",["सूर्य","चंद्रमा","मंगल","शुक्र"],1],
-["बल की SI इकाई क्या है?",["जूल","न्यूटन","वाट","मीटर"],1],
-["मनुष्य सांस लेने के लिए कौन सी गैस उपयोग करता है?",["ऑक्सीजन","नाइट्रोजन","हीलियम","मीथेन"],0],
-["पौधों का हरा रंग किसके कारण होता है?",["हीमोग्लोबिन","क्लोरोफिल","कैल्शियम","प्रोटीन"],1]
-],
-
-"गणित": [
-["12 × 8 कितना होता है?",["86","96","106","108"],1],
-["100 ÷ 4 कितना है?",["20","25","30","40"],1],
-["9 का वर्ग कितना है?",["18","72","81","99"],2],
-["15 + 25 कितना है?",["30","35","40","45"],2],
-["7 × 7 कितना है?",["42","48","49","56"],2],
-["144 ÷ 12 कितना है?",["10","11","12","14"],2],
-["80 का आधा कितना है?",["20","30","40","50"],2],
-["100 का 20 प्रतिशत कितना है?",["10","20","30","40"],1],
-["त्रिभुज की कितनी भुजाएँ होती हैं?",["2","3","4","5"],1],
-["5 का घन कितना है?",["25","75","100","125"],3]
-],
-
-"अंग्रेज़ी": [
-["Apple का हिंदी अर्थ क्या है?",["आम","सेब","केला","अंगूर"],1],
-["Cat का हिंदी अर्थ क्या है?",["कुत्ता","बिल्ली","घोड़ा","शेर"],1],
-["Book का हिंदी अर्थ क्या है?",["किताब","कलम","मेज","कुर्सी"],0],
-["Sun का हिंदी अर्थ क्या है?",["चाँद","तारा","सूर्य","बादल"],2],
-["Water का हिंदी अर्थ क्या है?",["हवा","पानी","आग","मिट्टी"],1]
-],
-
-"सामान्य ज्ञान": [
-["भारत की राजधानी क्या है?",["मुंबई","दिल्ली","कोलकाता","चेन्नई"],1],
-["भारत का राष्ट्रीय पशु कौन है?",["शेर","बाघ","हाथी","हिरण"],1],
-["भारत कब स्वतंत्र हुआ?",["1945","1946","1947","1950"],2],
-["विश्व का सबसे बड़ा महासागर कौन सा है?",["हिंद महासागर","प्रशांत महासागर","अटलांटिक महासागर","आर्कटिक महासागर"],1],
-["एक सप्ताह में कितने दिन होते हैं?",["5","6","7","8"],2]
-],
-
-"कंप्यूटर": [
-["कंप्यूटर का दिमाग किसे कहते हैं?",["माउस","CPU","कीबोर्ड","मॉनिटर"],1],
-["कीबोर्ड का उपयोग किस लिए होता है?",["टाइप करने","सुनने","देखने","प्रिंट करने"],0],
-["HTML का पूरा नाम क्या है?",["Hyper Text Markup Language","High Text Machine Language","Home Tool Markup Language","इनमें से कोई नहीं"],0],
-["कंप्यूटर में माउस क्या है?",["आउटपुट डिवाइस","इनपुट डिवाइस","स्टोरेज","सॉफ्टवेयर"],1],
-["कंप्यूटर का उपयोग किसमें होता है?",["शिक्षा","बैंक","अस्पताल","उपरोक्त सभी"],3]
-],
-
-"इतिहास": [
-["भारत के राष्ट्रपिता किसे कहा जाता है?",["नेहरू","महात्मा गांधी","पटेल","सुभाष चंद्र बोस"],1],
-["ताजमहल किसने बनवाया था?",["अकबर","बाबर","शाहजहाँ","हुमायूँ"],2],
-["भारत के प्रथम प्रधानमंत्री कौन थे?",["डॉ. राजेंद्र प्रसाद","जवाहरलाल नेहरू","सरदार पटेल","लाल बहादुर शास्त्री"],1],
-["मुगल साम्राज्य का संस्थापक कौन था?",["अकबर","बाबर","औरंगजेब","शाहजहाँ"],1],
-["भारत का संविधान कब लागू हुआ?",["15 अगस्त 1947","26 जनवरी 1950","2 अक्टूबर 1948","26 नवंबर 1949"],1]
-],
-
-"भूगोल": [
-["विश्व का सबसे बड़ा महाद्वीप कौन सा है?",["अफ्रीका","एशिया","यूरोप","ऑस्ट्रेलिया"],1],
-["भारत की सबसे लंबी नदी कौन सी है?",["यमुना","गंगा","नर्मदा","गोदावरी"],1],
-["विश्व का सबसे ऊँचा पर्वत कौन सा है?",["K2","माउंट एवरेस्ट","कंचनजंगा","नंगा पर्वत"],1],
-["सहारा मरुस्थल किस महाद्वीप में है?",["एशिया","अफ्रीका","यूरोप","ऑस्ट्रेलिया"],1],
-["पृथ्वी पर कितने महाद्वीप हैं?",["5","6","7","8"],2]
-]
-
-};
-
-let quiz = [];
-let current = 0;
-let score = 0;
-let answered = false;
-
-function startQuiz() {
-
-    let subject = document.getElementById("subject").value;
-    let count = Number(document.getElementById("count").value);
-
-    quiz = [...questions[subject]];
-
-    quiz.sort(() => Math.random() - 0.5);
-    quiz = quiz.slice(0, Math.min(count, quiz.length));
-
-    current = 0;
-    score = 0;
-
-    document.getElementById("home").style.display = "none";
-    document.getElementById("quiz").style.display = "block";
-
-    showQuestion();
+function addMessage(text, who){
+  const div = document.createElement("div");
+  div.className = "msg " + who;
+  div.textContent = text;
+  chat.appendChild(div);
+  chat.scrollTop = chat.scrollHeight;
 }
 
-function showQuestion() {
+async function askAI(message){
+  if(busy) return;
+  busy = true;
+  sendBtn.disabled = true;
+  statusText.textContent = "AI जवाब तैयार कर रहा है...";
 
-    answered = false;
+  history.push({role:"user", parts:[{text:message}]});
 
-    let q = quiz[current];
-
-    document.getElementById("progress").innerText =
-    "सवाल " + (current + 1) + " / " + quiz.length;
-
-    document.getElementById("score").innerText =
-    "अंक: " + score;
-
-    document.getElementById("question").innerText = q[0];
-
-    document.getElementById("feedback").innerText = "";
-
-    document.getElementById("next").disabled = true;
-
-    let options = document.getElementById("options");
-    options.innerHTML = "";
-
-    q[1].forEach((option,index) => {
-
-        let div = document.createElement("div");
-
-        div.className = "option";
-        div.innerText = option;
-
-        div.onclick = () => checkAnswer(index,div);
-
-        options.appendChild(div);
-
+  try{
+    const response = await fetch("/chat",{
+      method:"POST",
+      headers:{"Content-Type":"application/json"},
+      body:JSON.stringify({history})
     });
 
+    const data = await response.json();
+    if(!response.ok) throw new Error(data.error || "Server error");
+
+    const reply = data.reply || "मुझे जवाब नहीं मिला।";
+    history.push({role:"model",parts:[{text:reply}]});
+    addMessage(reply,"ai");
+    statusText.textContent = "आपकी बारी है!";
+  }catch(error){
+    history.pop();
+    addMessage("कनेक्शन में समस्या: " + error.message,"ai");
+    statusText.textContent = "कनेक्शन नहीं हो पाया";
+  }finally{
+    busy = false;
+    sendBtn.disabled = false;
+    input.focus();
+  }
 }
 
-function checkAnswer(index, selected) {
+function startQuiz(){
+  history = [];
+  chat.innerHTML = "";
+  const subject = prompt(
+    "किस विषय का Quiz खेलना चाहते हैं?\nजैसे: Science, Maths, History, Geography, GK"
+  );
+  if(!subject || !subject.trim()) return;
 
-    if(answered) return;
-
-    answered = true;
-
-    let correct = quiz[current][2];
-
-    let all = document.querySelectorAll(".option");
-
-    all.forEach((option,i) => {
-
-        if(i === correct) option.classList.add("correct");
-
-        if(i === index && index !== correct)
-        option.classList.add("wrong");
-
-    });
-
-    if(index === correct) {
-
-        score++;
-
-        document.getElementById("feedback").innerText =
-        "✅ बहुत बढ़िया! आपका जवाब सही है।";
-
-    } else {
-
-        document.getElementById("feedback").innerText =
-        "❌ गलत जवाब! सही जवाब है: " + quiz[current][1][correct];
-
-    }
-
-    document.getElementById("score").innerText =
-    "अंक: " + score;
-
-    document.getElementById("next").disabled = false;
-
+  addMessage("मेरा विषय: " + subject,"user");
+  askAI(
+    "मुझे " + subject +
+    " विषय पर हिंदी में 10 सवालों का Quiz खिलाइए। " +
+    "एक बार में केवल एक सवाल पूछिए। पहला सवाल अभी पूछिए। " +
+    "मेरे जवाब को समझकर सही या गलत बताइए, छोटा कारण समझाइए, " +
+    "फिर अगला सवाल पूछिए। मेरे स्कोर का हिसाब रखिए। " +
+    "10 सवाल पूरे होने पर कुल स्कोर और परिणाम बताइए। " +
+    "पूरी बातचीत हिंदी में रखिए।"
+  );
 }
 
-function nextQuestion() {
-
-    current++;
-
-    if(current < quiz.length) {
-
-        showQuestion();
-
-    } else {
-
-        showResult();
-
-    }
-
+function sendAnswer(){
+  const text = input.value.trim();
+  if(!text || busy) return;
+  input.value = "";
+  addMessage(text,"user");
+  askAI(text);
 }
-
-function showResult() {
-
-    document.getElementById("quiz").style.display = "none";
-
-    document.getElementById("result").style.display = "block";
-
-    let percent = Math.round(score / quiz.length * 100);
-
-    document.getElementById("finalScore").innerText =
-    score + " / " + quiz.length;
-
-    document.getElementById("percentage").innerText =
-    "आपका परिणाम: " + percent + "%";
-
-    let message = percent >= 80 ?
-    "🏆 शानदार! आपने बहुत अच्छा किया!" :
-    percent >= 50 ?
-    "👏 बहुत अच्छा! अभ्यास जारी रखें!" :
-    "💪 चिंता न करें, फिर से कोशिश करें!";
-
-    document.getElementById("message").innerText = message;
-
-}
-
 </script>
-
 </body>
 </html>
